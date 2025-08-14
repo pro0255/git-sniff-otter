@@ -178,9 +178,7 @@ Analysis of 2 repositories over the past 7 days shows moderate development activ
 
     print("Sample report structure:")
     print(sample_report[:500] + "...")
-    print(
-        "\n✅ This shows the type of comprehensive reports Git Sniff Otter generates!"
-    )
+    print("\n✅ This shows the type of comprehensive reports Git Sniff Otter generates!")
 
 
 def main():

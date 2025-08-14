@@ -4,41 +4,8 @@ import os
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-try:
-    from pydantic import BaseModel, Field, field_validator, model_validator
-except ImportError:
-    print("Warning: Pydantic not installed. Using basic configuration.")
-
-    class BaseModel:
-        def __init__(self, **kwargs):
-            for key, value in kwargs.items():
-                setattr(self, key, value)
-
-    def Field(default=None, description=""):
-        return default
-
-    def field_validator(*args, **kwargs):
-        def decorator(func):
-            return func
-
-        return decorator
-
-    def model_validator(*args, **kwargs):
-        def decorator(func):
-            return func
-
-        return decorator
-
-
-try:
-    from dotenv import load_dotenv
-except ImportError:
-    print(
-        "Warning: python-dotenv not installed. Environment variables won't be loaded from .env file."
-    )
-
-    def load_dotenv(path=None):
-        pass
+from dotenv import load_dotenv
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class Config(BaseModel):
@@ -112,5 +79,7 @@ def load_config(config_file: Optional[str] = None) -> Config:
         slack_channel=os.getenv("SLACK_CHANNEL", "#general"),
         repository_paths=[],  # Will be set via CLI
         time_window_days=int(os.getenv("TIME_WINDOW_DAYS", "7")),
+        start_date=None,
+        end_date=None,
         gitinspector_path=os.getenv("GITINSPECTOR_PATH", "gitinspector"),
     )

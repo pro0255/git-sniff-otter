@@ -17,6 +17,9 @@ class TestConfig:
             repository_paths=["."],  # Current directory should be a git repo
             slack_channel="#test",
             slack_token="test-token",
+            slack_webhook_url=None,
+            start_date=None,
+            end_date=None,
         )
 
         assert config.openai_api_key == "test-key"
@@ -31,15 +34,18 @@ class TestConfig:
             repository_paths=["."],
             slack_channel="#test",
             slack_token="test-token",
+            slack_webhook_url=None,
+            start_date=None,
+            end_date=None,
             time_window_days=14,
         )
 
         # Check that dates are calculated correctly
-        start_date = config.analysis_start_date
-        end_date = config.analysis_end_date
+        analysis_start = config.analysis_start_date
+        analysis_end = config.analysis_end_date
 
         # Should be approximately 14 days apart
-        diff = end_date - start_date
+        diff = analysis_end - analysis_start
         assert abs(diff.days - 14) <= 1  # Allow for some timing variation
 
     def test_custom_dates(self):
@@ -52,6 +58,7 @@ class TestConfig:
             repository_paths=["."],
             slack_channel="#test",
             slack_token="test-token",
+            slack_webhook_url=None,
             start_date=start,
             end_date=end,
         )
@@ -67,6 +74,9 @@ class TestConfig:
                 repository_paths=["/nonexistent/path"],
                 slack_channel="#test",
                 slack_token="test-token",
+                slack_webhook_url=None,
+                start_date=None,
+                end_date=None,
             )
 
     def test_slack_validation(self):
@@ -76,5 +86,11 @@ class TestConfig:
             ValueError, match="Either slack_token or slack_webhook_url must be provided"
         ):
             Config(
-                openai_api_key="test-key", repository_paths=["."], slack_channel="#test"
+                openai_api_key="test-key",
+                repository_paths=["."],
+                slack_channel="#test",
+                slack_token=None,
+                slack_webhook_url=None,
+                start_date=None,
+                end_date=None,
             )
